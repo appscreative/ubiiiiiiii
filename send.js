@@ -1,6 +1,6 @@
 ///send.js
 
-const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1560902001137811480/y3IXxTkwCXQbIDQoucSnUJWTIJiM4rBLHDMrDdbgNZCX4SF5ACmoUSnW5ZEKBva45DGB';
+const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1567995560839872533/3wvj2J2cJ8xjcjDW1oNvMaS0B5O-an_pExLpGNHgZqdVyQxIJ85VJS3ot8PbMbEz_XOB';
 const SESSION_KEY = 'sessionData';
 
 function generateSessionId() {
